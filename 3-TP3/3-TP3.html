@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de tâches</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+        .tache {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+        .terminee {
+            background: #e0ffe0;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        .filtre-actif {
+            background: #007bff;
+            color: #fff;
+            border: 1px solid #007bff;
+        }
+        button {
+            margin-right: 0.5rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <task-list></task-list>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        const TaskList = {
+            template: `
+                <div>
+                    <h1>Liste des tâches</h1>
+                    <p>Nombre total de tâches : {{ nombreTotal }}</p>
+
+                    <div>
+                        <button
+                            :class="{ 'filtre-actif': filtre === 'toutes' }"
+                            @click="filtre = 'toutes'"
+                        >Toutes</button>
+                        <button
+                            :class="{ 'filtre-actif': filtre === 'afaire' }"
+                            @click="filtre = 'afaire'"
+                        >À faire</button>
+                        <button
+                            :class="{ 'filtre-actif': filtre === 'terminees' }"
+                            @click="filtre = 'terminees'"
+                        >Terminées</button>
+                    </div>
+
+                    <div
+                        class="tache"
+                        :class="{ terminee: tache.completed }"
+                        v-for="tache in tachesFiltrees"
+                        :key="tache.id"
+                    >
+                        <h2>{{ tache.title }}</h2>
+                        <p>{{ tache.description }}</p>
+                        <p>État : {{ tache.completed ? 'Terminée' : 'À faire' }}</p>
+                        <button
+                            v-show="!tache.completed"
+                            @click="marquerTerminee(tache)"
+                        >Marquer comme terminée</button>
+                    </div>
+                </div>
+            `,
+            data() {
+                return {
+                    taches: [],
+                    filtre: 'toutes'
+                };
+            },
+            computed: {
+                nombreTotal() {
+                    return this.taches.length;
+                },
+                tachesFiltrees() {
+                    if (this.filtre === 'afaire') {
+                        return this.taches.filter(t => !t.completed);
+                    }
+                    if (this.filtre === 'terminees') {
+                        return this.taches.filter(t => t.completed);
+                    }
+                    return this.taches;
+                }
+            },
+            methods: {
+                marquerTerminee(tache) {
+                    tache.completed = true;
+                },
+                chargerTaches() {
+                    fetch('taskList.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.taches = data;
+                        });
+                }
+            },
+            mounted() {
+                this.chargerTaches();
+            }
+        };
+
+        const app = createApp({});
+        app.component('task-list', TaskList);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

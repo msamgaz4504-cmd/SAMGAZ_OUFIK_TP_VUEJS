@@ -1,0 +1,28 @@
+{
+  "jobs": [
+    {
+      "id": 1,
+      "title": "Développeur Frontend",
+      "description": "Développement d'interfaces avec Vue.js.",
+      "salary": 45000,
+      "createdAt": "2024-01-10",
+      "experience": 2
+    },
+    {
+      "id": 2,
+      "title": "Développeur Backend",
+      "description": "API Node.js / Express.",
+      "salary": 50000,
+      "createdAt": "2024-02-15",
+      "experience": 3
+    },
+    {
+      "id": 3,
+      "title": "Data Analyst",
+      "description": "Analyse de données avec Python.",
+      "salary": 42000,
+      "createdAt": "2024-03-01",
+      "experience": 1
+    }
+  ]
+}

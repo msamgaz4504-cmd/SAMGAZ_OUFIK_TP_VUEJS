@@ -1,0 +1,16 @@
+{
+  "name": "jobs-app",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "server": "json-server --watch db.json --port 3000"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "@vitejs/plugin-vue": "^5.0.0"
+  }
+}

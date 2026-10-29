@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Catalogue de livres</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <h1>Catalogue de livres</h1>
+
+    <form @submit.prevent="ajouterLivre">
+      <input v-model.trim="newBook.title" placeholder="Titre" />
+      <input v-model.lazy="newBook.author" placeholder="Auteur" />
+      <input v-model.number="newBook.year" type="number" placeholder="Année" />
+      <select v-model="newBook.genre">
+        <option value="">-- Genre --</option>
+        <option value="roman">Roman</option>
+        <option value="essai">Essai</option>
+        <option value="bd">BD</option>
+        <option value="poesie">Poésie</option>
+      </select>
+      <label>
+        <input type="checkbox" v-model="newBook.isFav" /> Favori
+      </label>
+
+      <input
+        v-model="nouveauMotCle"
+        placeholder="Mot-clé"
+        @keyup.enter="ajouterMotCle"
+      />
+
+      <div class="chips">
+        <span v-for="mot in newBook.keywords" :key="mot" class="chip">
+          {{ mot }}
+          <button type="button" @click.stop="retirerMotCle(mot)">×</button>
+        </span>
+      </div>
+
+      <button type="submit" :disabled="!formulaireValide">Ajouter</button>
+    </form>
+
+    <div class="book" v-for="book in books" :key="book.id" @click="toggleFavori(book)">
+      <h2>{{ book.title }}</h2>
+      <p>{{ book.author }} — {{ book.year }}</p>
+      <p>{{ book.genre }}</p>
+      <p>{{ book.isFav ? '★ Favori' : '☆' }}</p>
+      <button @click.stop="supprimerLivre(book)">Supprimer</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
